@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CommandLineParser.Options
 {
-    public class RangeOption<T> : IOption<T>
+    public class RangeOption<T> : AbstractOption<T> where T : IComparable<T>
     {
-        private readonly string _id;
-        private IEnumerable<GenericSynonym<T>> _synonyms;
-        private bool _required;
 
         private T _minValue;
         private T _maxValue;
@@ -15,41 +13,12 @@ namespace CommandLineParser.Options
         private bool _hasMax;
 
 
-        public RangeOption(string id)
+        public RangeOption(string id) : base(id)
         {
-            _id = id;
-
             _hasMin = false;
             _hasMax = false;
         }
 
-
-        public string Id
-        {
-            get { return _id; }
-        }
-
-        public IOption<T> SetSynonyms(params string[] synonyms)
-        {
-            _synonyms = synonyms.Select(s => new GenericSynonym<T>(this, s));
-            return this;
-        }
-
-        public IOption<T> IsRequired()
-        {
-            _required = true;
-            return this;
-        }
-
-        IOption IOption.IsRequired()
-        {
-            return IsRequired();
-        }
-
-        IOption IOption.SetSynonyms(params string[] synonyms)
-        {
-            return SetSynonyms(synonyms);
-        }
 
         public RangeOption<T> SetMinValue(T minValue)
         {
@@ -63,6 +32,18 @@ namespace CommandLineParser.Options
             _maxValue = maxValue;
             _hasMax = true;
             return this;
+        }
+
+        public bool IsValid(T value)
+        {
+            bool valid = true;
+            if (_hasMin)
+                valid &= value.CompareTo(_minValue) >= 0;
+
+            if (_hasMax)
+                valid &= value.CompareTo(_maxValue) <= 0;
+
+            return valid;
         }
     }
 }

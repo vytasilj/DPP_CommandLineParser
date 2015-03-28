@@ -40,10 +40,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IParser.cs" />
+    <Compile Include="ISynonym.cs" />
+    <Compile Include="Options\AbstractOption.cs" />
     <Compile Include="Options\BoolOption.cs" />
     <Compile Include="Options\EnumOption.cs" />
     <Compile Include="Options\IOption.cs" />
     <Compile Include="Options\RangeOption.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GenericSynonym.cs" />
   </ItemGroup>
