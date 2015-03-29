@@ -6,8 +6,9 @@ namespace CommandLineParser.Options
     public abstract class AbstractOption<T> : IOption<T>
     {
         private readonly string _id;
-        private IEnumerable<GenericSynonym<T>> _synonyms;
+        private IEnumerable<Synonym<T>> _synonyms;
         private bool _required;
+        private T _value;
 
         protected AbstractOption(string id)
         {
@@ -20,9 +21,14 @@ namespace CommandLineParser.Options
             get { return _id; }
         }
 
+        public IEnumerable<ISynonym<T>> Synonyms
+        {
+            get { return _synonyms; }
+        }
+
         public IOption<T> SetSynonyms(params string[] synonyms)
         {
-            _synonyms = synonyms.Select(s => new GenericSynonym<T>(this, s));
+            _synonyms = synonyms.Select(s => new Synonym<T>(this, s));
             return this;
         }
 
@@ -41,5 +47,30 @@ namespace CommandLineParser.Options
         {
             return SetSynonyms(synonyms);
         }
+
+        IEnumerable<ISynonym> IOption.Synonyms
+        {
+            get { return Synonyms; }
+        }
+
+        public bool TrySetValue(object value)
+        {
+            if (value is T)
+                return TrySetValue((T) value);
+            return false;
+        }
+
+        public bool TrySetValue(T value)
+        {
+            if (CheckValue(value))
+            {
+                _value = value;
+                return true;
+            }
+            return false;
+        }
+
+
+        protected abstract bool CheckValue(T value);
     }
 }

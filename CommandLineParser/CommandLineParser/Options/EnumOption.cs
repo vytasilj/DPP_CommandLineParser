@@ -18,5 +18,11 @@ namespace CommandLineParser.Options
             _values = values;
             return this;
         }
+
+
+        protected override bool CheckValue(string value)
+        {
+            return _values.Contains(value);
+        }
     }
 }

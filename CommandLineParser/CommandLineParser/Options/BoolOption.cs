@@ -8,5 +8,10 @@ namespace CommandLineParser.Options
         public BoolOption(string id) : base(id)
         {
         }
+
+        protected override bool CheckValue(bool value)
+        {
+            return true;
+        }
     }
 }

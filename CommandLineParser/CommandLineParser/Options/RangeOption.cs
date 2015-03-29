@@ -34,7 +34,7 @@ namespace CommandLineParser.Options
             return this;
         }
 
-        public bool IsValid(T value)
+        protected override bool CheckValue(T value)
         {
             bool valid = true;
             if (_hasMin)

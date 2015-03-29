@@ -1,4 +1,5 @@
-﻿using CommandLineParser.Options;
+﻿using System.Linq;
+using CommandLineParser.Options;
 using NUnit.Framework;
 
 namespace CommandLineParser.Tests
@@ -14,6 +15,7 @@ namespace CommandLineParser.Tests
             var intRange = new RangeOption<int>("size").SetMinValue(10).SetMaxValue(100).IsRequired().SetSynonyms("-s", "--size");
 
             var enumOption = new EnumOption("enum").SetValues("aaa", "bbb", "ccc").IsRequired().SetSynonyms("-e", "--enumerate");
+            Assert.That(enumOption.Synonyms.Count(), Is.EqualTo(2));
 
             var parser = new Parser("--verbose -s=20 -e aaa".Split(' '));
             parser.AddKnownPreference(boolOption, intRange, enumOption);
