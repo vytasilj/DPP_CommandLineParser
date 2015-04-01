@@ -31,7 +31,7 @@ namespace CommandLineParser.Tests
 
             // Parser
             string[] cmdArguments = "--verbose -s=20 -e aaa".Split(' ');
-            var parser = factory.Create<IParser>(cmdArguments).Object;
+            var parser = new Parser(cmdArguments);
             parser.AddKnownPreference(boolOption, intOption, enumOption);
             parser.Parse();
 
