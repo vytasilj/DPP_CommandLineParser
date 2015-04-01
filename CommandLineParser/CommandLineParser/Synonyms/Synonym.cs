@@ -1,6 +1,6 @@
 ﻿using CommandLineParser.Options;
 
-namespace CommandLineParser
+namespace CommandLineParser.Synonyms
 {
     public class Synonym<T> : ISynonym<T>
     {
