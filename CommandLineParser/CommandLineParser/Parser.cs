@@ -23,9 +23,9 @@ namespace CommandLineParser
         }
 
 
-        public void AddKnownPreference(params IOption[] preferences)
+        public void AddKnownPreference(params IOption[] options)
         {
-            foreach (var synonym in preferences.SelectMany(option => option.Synonyms))
+            foreach (var synonym in options.SelectMany(option => option.Synonyms))
             {
                 _synonyms.Add(synonym.Name, synonym.MainOption);
             }

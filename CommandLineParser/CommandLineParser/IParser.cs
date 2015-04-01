@@ -1,20 +1,26 @@
 ﻿using System.Collections.Generic;
 using CommandLineParser.Options;
+using CommandLineParser.Synonyms;
 
 namespace CommandLineParser
 {
     public interface IParser
     {
+        /// <summary>
+        /// List of parsed options.
+        /// </summary>
         IEnumerable<IOption> Options { get; }
 
         /// <summary>
-        /// Pridam povolene volby
+        /// Add definied options.
+        /// Throw exception, if <see cref="ISynonym.Name"/> are not unique.
         /// </summary>
-        /// <param name="preferences"></param>
-        void AddKnownPreference(params IOption[] preferences);
+        /// <param name="options">options</param>
+        void AddKnownPreference(params IOption[] options);
 
         /// <summary>
-        /// Rozparsuji argumenty.
+        /// Parse cmd arguments.
+        /// Error => throw exception with list of wrong options.
         /// </summary>
         void Parse();
     }

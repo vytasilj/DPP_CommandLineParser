@@ -5,6 +5,9 @@ using CommandLineParser.Options;
 
 namespace CommandLineParser
 {
+    /// <summary>
+    /// Print options to <seealso cref="_writer"/>
+    /// </summary>
     public class Printer : IDisposable
     {
         private readonly TextWriter _writer;

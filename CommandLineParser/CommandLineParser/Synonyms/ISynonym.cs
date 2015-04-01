@@ -2,15 +2,19 @@
 
 namespace CommandLineParser.Synonyms
 {
+    /// <summary>
+    /// Non-generic interface of synonym (choice)
+    /// </summary>
     public interface ISynonym
     {
         /// <summary>
-        /// Volba, ke ktere je toto synonymum prirazeno
+        /// Option, that own this synonym.
         /// </summary>
         IOption MainOption { get; }
 
         /// <summary>
-        /// Nazev synonyma, ktery bude pouzit v prikazove radce
+        /// Name of synonym.
+        /// Used in cmd.
         /// </summary>
         string Name { get; }
     }
@@ -18,7 +22,7 @@ namespace CommandLineParser.Synonyms
     public interface ISynonym<T> : ISynonym
     {
         /// <summary>
-        /// Volba, ke ktere je toto synonymum prirazeno
+        /// Option, that own this synonym.
         /// </summary>
         new IOption<T> MainOption { get; }
     }
