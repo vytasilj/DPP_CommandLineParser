@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using CommandLineParser.Options;
+using Moq;
 using NUnit.Framework;
 
 namespace CommandLineParser.Tests
@@ -8,18 +10,36 @@ namespace CommandLineParser.Tests
     public class TestClass
     {
         [Test]
-        public void Test01()
+        public void DefaultUsingTest()
         {
-            var boolOption = new BoolOption("verbose").IsRequired().SetSynonyms("-v", "--verbose");
+            var factory = new MockFactory(MockBehavior.Loose);
 
-            var intRange = new RangeOption<int>("size").SetMinValue(10).SetMaxValue(100).IsRequired().SetSynonyms("-s", "--size");
+            // Bool option
+            var mockBoolOption = factory.Create<BoolOption>("verbose");
+            var boolOption = mockBoolOption.Object.IsRequired().SetSynonyms("-v", "--verbose");
 
-            var enumOption = new EnumOption("enum").SetValues("aaa", "bbb", "ccc").IsRequired().SetSynonyms("-e", "--enumerate");
+            // Int option
+            const int minValue = 10;
+            const int maxValue = 100;
+            var mockIntOption = factory.Create<RangeOption<int>>("size");
+            var intOption = mockIntOption.Object.SetMinValue(minValue).SetMaxValue(maxValue).SetSynonyms("-s", "--size");
+
+            // Enum Option
+            var mockEnumOption = factory.Create<EnumOption>("enumerate");
+            var enumOption = mockEnumOption.Object.SetValues("first", "second", "third").IsRequired().SetSynonyms("-e", "--enumerate");
             Assert.That(enumOption.Synonyms.Count(), Is.EqualTo(2));
 
-            var parser = new Parser("--verbose -s=20 -e aaa".Split(' '));
-            parser.AddKnownPreference(boolOption, intRange, enumOption);
+            // Parser
+            string[] cmdArguments = "--verbose -s=20 -e aaa".Split(' ');
+            var parser = factory.Create<IParser>(cmdArguments).Object;
+            parser.AddKnownPreference(boolOption, intOption, enumOption);
             parser.Parse();
+
+            // Printer
+            using (var printer = new Printer(Console.Out))
+            {
+                printer.WriteOptions(parser.Options);
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CommandLineParser.Synonyms;
 
 namespace CommandLineParser.Options
 {
@@ -9,6 +10,7 @@ namespace CommandLineParser.Options
         private IEnumerable<Synonym<T>> _synonyms;
         private bool _required;
         private T _value;
+        private bool _valueWasSet;
 
         protected AbstractOption(string id)
         {
@@ -38,6 +40,29 @@ namespace CommandLineParser.Options
             return this;
         }
 
+        public bool TrySetValue(object value)
+        {
+            if (value is T)
+                return TrySetValue((T) value);
+            return false;
+        }
+
+        public bool TrySetValue(T value)
+        {
+            if (CheckValue(value))
+            {
+                _value = value;
+                _valueWasSet = true;
+                return true;
+            }
+            return false;
+        }
+
+        public bool CheckOption()
+        {
+            return !_required || _valueWasSet;
+        }
+
         IOption IOption.IsRequired()
         {
             return IsRequired();
@@ -51,23 +76,6 @@ namespace CommandLineParser.Options
         IEnumerable<ISynonym> IOption.Synonyms
         {
             get { return Synonyms; }
-        }
-
-        public bool TrySetValue(object value)
-        {
-            if (value is T)
-                return TrySetValue((T) value);
-            return false;
-        }
-
-        public bool TrySetValue(T value)
-        {
-            if (CheckValue(value))
-            {
-                _value = value;
-                return true;
-            }
-            return false;
         }
 
 

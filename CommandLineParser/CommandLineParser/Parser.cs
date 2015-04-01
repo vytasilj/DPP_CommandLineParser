@@ -16,6 +16,13 @@ namespace CommandLineParser
             _arguments = commandLineArgs;
         }
 
+
+        public IEnumerable<IOption> Options
+        {
+            get { return _synonyms.Values.Distinct(); }
+        }
+
+
         public void AddKnownPreference(params IOption[] preferences)
         {
             foreach (var synonym in preferences.SelectMany(option => option.Synonyms))
