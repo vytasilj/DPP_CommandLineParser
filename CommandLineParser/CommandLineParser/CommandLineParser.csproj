@@ -46,6 +46,7 @@
     <Compile Include="Options\IOption.cs" />
     <Compile Include="Options\RangeOption.cs" />
     <Compile Include="Parser.cs" />
+    <Compile Include="Printer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Synonyms\ISynonym.cs" />
     <Compile Include="Synonyms\Synonym.cs" />
